@@ -1,13 +1,13 @@
 import requests
 import json
 from dotenv import dotenv_values
-
+import getpass
 config = dotenv_values("../.env")
 url = config['URL'] + 'student'
 
 def login():
     user = input('inserisci nome utente unisa:\t')
-    pwd = input('inserisci password unisa:\t')
+    pwd = getpass.getpass('Password:')
     obj = {
         "username":user,
         "password":pwd,
@@ -16,10 +16,7 @@ def login():
         "X-Esse3-User-Profile": "STUDENTE"
     }
     r = requests.post(url + "/login/", json=obj)
-    if(r.status_code==200):
-        return json.loads(r.text)
-    else:
-        return ""
+    return json.loads(r.text)
 
 def checkAuth(token: str):
     headers = {
