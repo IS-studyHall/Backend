@@ -1,6 +1,6 @@
 version: "3"
 services:
-       sellingbooks:
+      studyhall:
            container_name: studyhall
            image: studyhall
            restart: always
@@ -9,7 +9,7 @@ services:
              - "8080:8080"
            links:
              - mongo
-       mongo:
+      mongo:
              container_name: mongo
              image: mongo
              volumes:

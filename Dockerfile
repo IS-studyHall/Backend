@@ -12,7 +12,6 @@ COPY . .
 
 EXPOSE 8080
 
-CMD [ "node", "app.js" ]
+CMD [ "npm", "start" ]
 
-#sudo docker build . -t studyhall
-#sudo docker run -p 49160:8080 -d studyhall
+#docker compose up --build
