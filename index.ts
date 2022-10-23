@@ -1,8 +1,8 @@
-import express from 'express';
-import student from './routes/student'
+import express from 'express'
 import bodyParser from 'body-parser'
-import User from './models/student'
 import mongoose from 'mongoose'
+import Student from './routes/student'
+import Organization from './routes/organization'
 
 require('dotenv').config()
 
@@ -11,7 +11,8 @@ const port = process.env.PORT
 const uri = process.env.MONGO_URL
 
 app.use(bodyParser.json())
-app.use('/student', student)
+app.use('/student', Student)
+app.use('/organization', Organization)
 
 mongoose.connect(uri)
 .catch(error => console.log(error))

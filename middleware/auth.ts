@@ -1,4 +1,5 @@
 import Esse3 from '../sdk/Esse3'
+import Firebase from '../sdk/Firebase'
 import { Request, Response} from 'express'
 /*
 description: middleware module provide to check access token
@@ -13,7 +14,12 @@ class Auth {
     }catch(error) {
       return res.status(401).send("invalid token")
     }
+  }
 
+  static async organization(req: Request, res: Response, next: any) {
+    const token = req.headers["authorization"]
+    Firebase.verifyToken(token)
+    next()
   }
 }
 
