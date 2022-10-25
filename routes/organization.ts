@@ -15,7 +15,7 @@ router.post("/login", async (req: Request, res: Response) => {
     else res.status(401).send({message: 'invalid credentials'})
   })
 
-  router.get("/info", Auth.organization, async (req: Request, res: Response) => {
+  router.get("/example", Auth.organization, async (req: Request, res: Response) => {
     const body = req.body
     res.send({message: 'check'})
   })

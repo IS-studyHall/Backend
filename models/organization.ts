@@ -30,7 +30,6 @@ var studentSchema = new Schema({
             email: data.user.email,
             name: data.user.email.substring(0, data.user.email.indexOf('@')),
           })
-          console.log(user)
           organization.save()
         }
       })

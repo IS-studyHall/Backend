@@ -14,3 +14,10 @@ def login():
     }
     r = requests.post(url + "/login/", json=obj)
     return json.loads(r.text)
+
+def checkAuth(token: str):
+    headers = {
+        "Authorization": token
+    }
+    r = requests.get(url + "/example/", headers=headers)
+    print(r.text)

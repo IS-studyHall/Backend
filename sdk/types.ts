@@ -24,6 +24,11 @@ export interface Organization {
     uid: string
     email: string
 }
+
 export interface Esse3checkLogon {
     ok: boolean
+}
+
+export interface FirebaseVerifyToken {
+    email: string
 }

@@ -1,6 +1,6 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { app } from "../config/firebase";
-import { FirebaseLogin, Result } from './types';
+import { app, adminApp } from "../config/firebase";
+import { FirebaseLogin, FirebaseVerifyToken, Result } from './types';
 
 class Firebase{
     auth: any
@@ -11,7 +11,6 @@ class Firebase{
     async login(email:string, password:string): Promise<Result<FirebaseLogin> | undefined>{
         try{
             const { user } = await signInWithEmailAndPassword(this.auth, email, password)
-            console.log(user.uid, user.email)
             const result = {
                 data: {
                     token: await user.getIdToken(),
@@ -25,10 +24,15 @@ class Firebase{
         }
     }
 
-    async verifyToken(token: string) {
+    async verifyToken(token: string): Promise<Result<FirebaseVerifyToken> | undefined> {
         try{
-            const result = await this.auth.verifyIdToken(token)
-            console.log('firebase:',result)
+            const {email} = await adminApp.auth().verifyIdToken(token)
+            const result = {
+                data: {
+                    email: email
+                }
+            }
+            return result
         }catch(e){
             return undefined
         }

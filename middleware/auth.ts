@@ -18,8 +18,13 @@ class Auth {
 
   static async organization(req: Request, res: Response, next: any) {
     const token = req.headers["authorization"]
-    Firebase.verifyToken(token)
-    next()
+    if (!token) return res.status(403).send("A token is required for authentication")
+    try {
+    const resp = await Firebase.verifyToken(token)
+    return (resp) ? next() : res.status(401).send("invalid token")
+    } catch(error) {
+      return res.status(401).send("invalid token")
+    }
   }
 }
 
