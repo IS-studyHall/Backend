@@ -29,7 +29,7 @@ var studentSchema = new Schema({
   statics: {
     checkAndSave(data: Esse3login) {
       const Student = mongoose.model('Student')
-      Student.findOne({codFisc : data.user.codFis}, (err: any, user: any) =>{
+      Student.findOne({codFis : data.user.codFis}, (err: any, user: any) =>{
         if(!err && !user){
           const student = new Student({
             _id: data.user.userId,
