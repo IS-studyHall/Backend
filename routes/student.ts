@@ -6,15 +6,15 @@ const router = Router()
 
 router.post("/login", async (req: Request, res: Response) => {
   const { username, password } = req.body
-    const { data } = await Esse3.login(username, password)
-    if(data){
-      Student.checkAndSave(data)
-      res.send({
-        data: data
-      })
-    }
-    else
-      res.status(401).send({message: 'invalid credentials'})
+  const { data } = await Esse3.login(username, password)
+  if(data){
+    Student.checkAndSave(data)
+    res.send({
+      data: data
+    })
+  }
+  else
+    res.status(401).send({message: 'invalid credentials'})
 })
 
 router.get("/info", Auth.student, async (req: Request, res: Response) => {
@@ -22,4 +22,4 @@ router.get("/info", Auth.student, async (req: Request, res: Response) => {
   res.send({message: 'check'})
 })
 
-  export default router
+export default router
