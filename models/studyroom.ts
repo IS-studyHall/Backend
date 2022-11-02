@@ -25,11 +25,15 @@ var studyroomSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "Building"
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "Organization"
+    },
     created: {
       type: Date,
       default: Date.now
     }
   }
 )
-
+studyroomSchema.index({ owner: 1, building: 1 },{unique: true});
 export default mongoose.model('Studyroom', studyroomSchema)
