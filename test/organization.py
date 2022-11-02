@@ -5,9 +5,7 @@ import getpass
 config = dotenv_values("../.env")
 url = config['URL'] + 'organization'
 
-def login():
-    user = input('inserisci email associazione:\t')
-    pwd = getpass.getpass('Password:')
+def login(user: str, pwd: str):
     obj = {
         "email":user,
         "password":pwd,
