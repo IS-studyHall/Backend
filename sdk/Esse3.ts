@@ -24,7 +24,10 @@ class Esse3 {
             })
             const result = {
                 data: {
-                    user: resp['data']['user'],
+                    firstName: resp['data']['user']['firstName'],
+                    lastName: resp['data']['user']['lastName'],
+                    codFis: resp['data']['user']['codFis'],
+                    username: resp['data']['user']['userId'],
                     token: tokenAuth,
                 }
             }

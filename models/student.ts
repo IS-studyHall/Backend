@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { Esse3login } from '../sdk/types'
 
 const Schema = mongoose.Schema
 
@@ -24,24 +23,6 @@ var studentSchema = new Schema(
     created: {
       type: Date,
       default: Date.now
-    }
-  },
-  {
-    statics: {
-      checkAndSave(data: Esse3login) {
-        const Student = mongoose.model('Student')
-        Student.findOne({codFis : data.user.codFis}, (err: any, user: any) =>{
-          if(!err && !user){
-            const student = new Student({
-              _id: data.user.userId,
-              firstName: data.user.firstName,
-              lastName: data.user.lastName,
-              codFis: data.user.codFis
-            })
-            student.save()
-          }
-        })
-      }
     }
   }
 )

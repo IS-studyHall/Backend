@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
-
+import { Studyroom } from '../sdk/types';
+import User from './user';
+import Building from './building';
 const Schema = mongoose.Schema
 
 var studyroomSchema = new Schema(
@@ -21,19 +23,40 @@ var studyroomSchema = new Schema(
         type: Boolean,
         default: true
     },
+    image: {
+      type: String,
+      required: true,
+    },
     building: {
         type: Schema.Types.ObjectId,
         ref: "Building"
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "Organization"
+      ref: "User"
     },
     created: {
       type: Date,
       default: Date.now
     }
+  },
+  {
+    statics: {
+      async checkAndSave(data: Studyroom) {
+        const Studyroom = mongoose.model('Studyroom')
+        const building = await Building.findById(data.building)
+        const user = await User.findOne({username: data.owner, supervisor: true})
+        const studyroom = new Studyroom({
+          name: data.name,
+          seats: data.seats,
+          floor: data.floor,
+          building: building,
+          owner: user,
+        })
+        studyroom.save()
+      }
+    }
   }
 )
-studyroomSchema.index({ owner: 1, building: 1 },{unique: true});
+studyroomSchema.index({ name: 1 },{unique: true});
 export default mongoose.model('Studyroom', studyroomSchema)

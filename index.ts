@@ -12,7 +12,7 @@ const app = express()
 const port = process.env.PORT
 const uri = process.env.MONGO_URL
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '10mb' }))
 app.use('/student', Student)
 app.use('/organization', Organization)
 app.use('/building', Building)

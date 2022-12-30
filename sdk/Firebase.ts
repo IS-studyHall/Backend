@@ -11,11 +11,13 @@ class Firebase{
     async login(email:string, password:string): Promise<Result<FirebaseLogin> | undefined>{
         try{
             const { user } = await signInWithEmailAndPassword(this.auth, email, password)
+            const username = email.substring(0, email.indexOf('@'))
             const result = {
                 data: {
                     token: await user.getIdToken(),
                     refreshToken: user.refreshToken,
-                    user: user
+                    email: user.email,
+                    username: username,
                 }
             }
             return result
