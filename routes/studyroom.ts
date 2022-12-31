@@ -36,14 +36,34 @@ router.post("/create", auth.organization, async (req: Request, res: Response) =>
   } catch(err) {
       console.error(err)
   }
-  const studyroom = await Studyroom.checkAndSave({ name, seats, floor, building, image: imgName, owner: username })
+  await Studyroom.checkAndSave({ name, seats, floor, building, image: imgName, owner: username })
   console.log('CREATE STUDYROOM')
   res.status(200).send({data: 'create'})
 })
 router.get("/:id", async (req: Request, res: Response) => {
   const {id} = req.params
-  const allStudyroom = await Studyroom.findOne({_id: id})
+  const studyroom = await Studyroom.findOne({_id: id})
+  studyroom.image = 'http://127.0.0.1:8080/' + studyroom.image
   console.log('READ STUDYROOM')
-  res.status(200).send({data: allStudyroom})
+  res.status(200).send({data: studyroom})
+})
+router.delete("/:id", auth.organization, async (req: Request, res: Response) => {
+  const {id} = req.params
+  const {username} = req.body
+  console.log('PARAMS', id, username)
+  const owner = await User.findOne({username: username})
+  console.log('OWNER', owner)
+  const studyroom = await Studyroom.findOne({_id: id, owner: owner})
+  console.log('STUDYROOM', studyroom)
+  const image = studyroom.image
+  try{
+    fs.unlinkSync(image)
+  }catch(e){
+    console.log(e)
+  }
+  finally{
+    await studyroom.deleteOne()
+    res.status(200).send({data: 'delete'})
+  }
 })
 export default router

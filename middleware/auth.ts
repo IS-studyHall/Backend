@@ -21,6 +21,7 @@ class Auth {
     if (!token) return res.status(403).send("A token is required for authentication")
     try {
       const resp = await Firebase.verifyToken(token)
+      console.log(resp.data)
       req.body.username = resp.data.email.substring(0, resp.data.email.indexOf('@'))
     return (resp) ? next() : res.status(401).send("invalid token")
     } catch(error) {
