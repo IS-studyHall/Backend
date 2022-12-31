@@ -51,6 +51,7 @@ var studyroomSchema = new Schema(
           seats: data.seats,
           floor: data.floor,
           building: building,
+          image: data.image,
           owner: user,
         })
         studyroom.save()

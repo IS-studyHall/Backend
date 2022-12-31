@@ -17,6 +17,7 @@ app.use('/student', Student)
 app.use('/organization', Organization)
 app.use('/building', Building)
 app.use('/studyroom', Studyroom)
+app.use('/image', express.static('image'));
 
 mongoose.connect(uri)
 .catch(error => console.log(error))
