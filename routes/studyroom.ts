@@ -74,4 +74,27 @@ router.delete("/:id", auth.organization, async (req: Request, res: Response) => 
     res.status(200).send({data: 'delete'})
   }
 })
+router.patch("/:id", auth.organization, async (req: Request, res: Response) => {
+  const {id} = req.params
+  const {name, seats, floor, building, username, image} = req.body
+  const owner = await User.findOne({username: username})
+  var imgName = image;
+  try {
+    if(image.includes('data:image/png;base64,')) {
+      imgName = `image/${uuidv4()}.png`;
+      var base64Data = image.replace(/^data:image\/png;base64,/, "");
+      var buf = Buffer.from(base64Data, 'base64');
+      while(fs.existsSync(imgName))imgName = `image/${uuidv4()}.png`;
+      fs.writeFile(imgName, buf,(err) => 
+          console.log('download finito!', err)
+      );
+    }
+  } catch(err) {
+      console.error(err)
+  }
+  finally{
+    await Studyroom.findOneAndUpdate({_id: id, owner: owner}, {name, seats, floor, building, image: imgName})
+    res.status(200).send({data: 'update'})
+  }
+})
 export default router
