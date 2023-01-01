@@ -40,6 +40,17 @@ router.post("/create", auth.organization, async (req: Request, res: Response) =>
   console.log('CREATE STUDYROOM')
   res.status(200).send({data: 'create'})
 })
+router.get("/:id/changestatus", auth.organization, async (req: Request, res: Response) => {
+  const {id} = req.params
+  const {username} = req.body
+  const owner = await User.findOne({username: username})
+  console.log('OWNER', owner)
+  const studyroom = await Studyroom.findOne({_id: id, owner: owner})
+  console.log('STUDYROOM', studyroom)
+  await studyroom.updateOne({isactive: !studyroom.isactive})
+  console.log('UPDATE')
+  res.status(200).send({data: 'change status'})
+})
 router.get("/:id", async (req: Request, res: Response) => {
   const {id} = req.params
   const studyroom = await Studyroom.findOne({_id: id})
@@ -50,11 +61,8 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.delete("/:id", auth.organization, async (req: Request, res: Response) => {
   const {id} = req.params
   const {username} = req.body
-  console.log('PARAMS', id, username)
   const owner = await User.findOne({username: username})
-  console.log('OWNER', owner)
   const studyroom = await Studyroom.findOne({_id: id, owner: owner})
-  console.log('STUDYROOM', studyroom)
   const image = studyroom.image
   try{
     fs.unlinkSync(image)

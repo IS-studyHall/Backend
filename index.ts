@@ -5,7 +5,7 @@ import Student from './routes/student'
 import Organization from './routes/organization'
 import Building from './routes/building'
 import Studyroom from './routes/studyroom'
-
+import User from './routes/user'
 require('dotenv').config()
 
 const app = express()
@@ -17,6 +17,7 @@ app.use('/student', Student)
 app.use('/organization', Organization)
 app.use('/building', Building)
 app.use('/studyroom', Studyroom)
+app.use('/user', User)
 app.use('/image', express.static('image'));
 
 mongoose.connect(uri)
