@@ -6,6 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 const router = Router()
 
+router.get("/", async (req: Request, res: Response) => {
+  const allStudyroom = await Studyroom.find()
+  console.log('READ STUDYROOM')
+  res.status(200).send({data: allStudyroom})
+})
 router.get("/supervisor", auth.organization, async (req: Request, res: Response) => {
   const {username} = req.body
   const owner = await User.findOne({username: username, supervisor: true})
@@ -16,11 +21,6 @@ router.get("/supervisor", auth.organization, async (req: Request, res: Response)
     }
  )
   console.log('READ STUDYROOM', allStudyroom)
-  res.status(200).send({data: allStudyroom})
-})
-router.get("/all", async (req: Request, res: Response) => {
-  const allStudyroom = await Studyroom.find()
-  console.log('READ STUDYROOM')
   res.status(200).send({data: allStudyroom})
 })
 router.post("/create", auth.organization, async (req: Request, res: Response) => {
@@ -78,7 +78,8 @@ router.patch("/:id", auth.organization, async (req: Request, res: Response) => {
   const {id} = req.params
   const {name, seats, floor, building, username, image} = req.body
   const owner = await User.findOne({username: username})
-  var imgName = image;
+  var imgName = image.substring(image.indexOf('/image') + 1)
+  console.log('image', imgName)
   try {
     if(image.includes('data:image/png;base64,')) {
       imgName = `image/${uuidv4()}.png`;
