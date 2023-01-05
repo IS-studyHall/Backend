@@ -4,11 +4,28 @@ import User from "../models/user";
 import auth from '../middleware/auth';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
+require('dotenv').config()
 const router = Router()
-
+const url = process.env.BASE_URL
+const media = process.env.MEDIA
 router.get("/", async (req: Request, res: Response) => {
-  const allStudyroom = await Studyroom.find()
-  console.log('READ STUDYROOM')
+  const allStudyroom = await Studyroom.aggregate(
+    [
+      {
+        $group : {
+          _id : "$building",
+          studyrooms: { $push: {_id: "$_id", name: "$name", image: "$image"} } // { $push: "$$ROOT" }
+        }
+      },
+     ]
+  )
+  allStudyroom.map(function(b, i){ 
+    b.studyrooms.map(function(s, i){ 
+      s.image=url + s.image
+      return s
+    })
+    return b
+  } )
   res.status(200).send({data: allStudyroom})
 })
 router.get("/supervisor", auth.organization, async (req: Request, res: Response) => {
@@ -16,7 +33,7 @@ router.get("/supervisor", auth.organization, async (req: Request, res: Response)
   const owner = await User.findOne({username: username, supervisor: true})
   const allStudyroom = (await Studyroom.find({owner: owner})).map(
     function(e, i){ 
-      e.image='http://127.0.0.1:8080/' + e.image
+      e.image=url + e.image
       return e
     }
  )
@@ -25,11 +42,11 @@ router.get("/supervisor", auth.organization, async (req: Request, res: Response)
 })
 router.post("/create", auth.organization, async (req: Request, res: Response) => {
   const {name, seats, floor, building, username, image} = req.body
-  var imgName = `image/${uuidv4()}.png`;
+  var imgName = `${media}${uuidv4()}.png`;
   var base64Data = image.replace(/^data:image\/png;base64,/, "");
   var buf = Buffer.from(base64Data, 'base64');
   try {
-    while(fs.existsSync(imgName))imgName = `image/${uuidv4()}.png`;
+    while(fs.existsSync(imgName))imgName = `${media}${uuidv4()}.png`;
     fs.writeFile(imgName, buf,(err) => 
         console.log('download finito!', err)
     );
@@ -54,7 +71,7 @@ router.get("/:id/changestatus", auth.organization, async (req: Request, res: Res
 router.get("/:id", async (req: Request, res: Response) => {
   const {id} = req.params
   const studyroom = await Studyroom.findOne({_id: id})
-  studyroom.image = 'http://127.0.0.1:8080/' + studyroom.image
+  studyroom.image = url + studyroom.image
   console.log('READ STUDYROOM')
   res.status(200).send({data: studyroom})
 })
@@ -78,14 +95,14 @@ router.patch("/:id", auth.organization, async (req: Request, res: Response) => {
   const {id} = req.params
   const {name, seats, floor, building, username, image} = req.body
   const owner = await User.findOne({username: username})
-  var imgName = image.substring(image.indexOf('/image') + 1)
+  var imgName = image.substring(image.indexOf(media) + 1)
   console.log('image', imgName)
   try {
     if(image.includes('data:image/png;base64,')) {
-      imgName = `image/${uuidv4()}.png`;
+      imgName = `${media}${uuidv4()}.png`;
       var base64Data = image.replace(/^data:image\/png;base64,/, "");
       var buf = Buffer.from(base64Data, 'base64');
-      while(fs.existsSync(imgName))imgName = `image/${uuidv4()}.png`;
+      while(fs.existsSync(imgName))imgName = `${media}${uuidv4()}.png`;
       fs.writeFile(imgName, buf,(err) => 
           console.log('download finito!', err)
       );

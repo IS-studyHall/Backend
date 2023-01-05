@@ -13,12 +13,12 @@ COPY . .
 EXPOSE 8080
 
 #dependecies for m1
-#RUN apt install ./utils/dependencies/mongodb-mongosh_1.6.0_arm64.deb
-#RUN apt install ./utils/dependencies/mongodb-database-tools-ubuntu2004-arm64-100.6.0.deb
+RUN apt install ./utils/dependencies/mongodb-mongosh_1.6.0_arm64.deb
+RUN apt install ./utils/dependencies/mongodb-database-tools-ubuntu2004-arm64-100.6.0.deb
 
 #dependencies for intel
-RUN apt install ./utils/dependencies/mongodb-mongosh_1.6.1_amd64.deb
-RUN apt install ./utils/dependencies/mongodb-database-tools-ubuntu2004-x86_64-100.6.1.deb
+#RUN apt install ./utils/dependencies/mongodb-mongosh_1.6.1_amd64.deb
+#RUN apt install ./utils/dependencies/mongodb-database-tools-ubuntu2004-x86_64-100.6.1.deb
 
 RUN dpkg -l mongodb-database-tools
 # command to import json files in mongodb docker

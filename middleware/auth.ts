@@ -10,6 +10,9 @@ class Auth {
     if (!token) return res.status(403).send("A token is required for authentication")
     try {
       const resp = await Esse3.checkLogon(token)
+      const decodeToken = Buffer.from(token, 'base64').toString('ascii');
+      const username = decodeToken.substring(0, decodeToken.indexOf(':'))
+      req.body.username = username.toUpperCase()
       return (resp.data.ok ===true) ?  next() : res.status(401).send("invalid token")
     }catch(error) {
       return res.status(401).send("invalid token")
