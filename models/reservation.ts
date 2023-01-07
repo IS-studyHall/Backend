@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 var reservationSchema = new Schema(
   {
     date: {
-        type: Date,
+        type: String,
     },
     start: {
       type: String,
@@ -17,6 +17,10 @@ var reservationSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "User"
     },
+    studyroom: {
+      type: Schema.Types.ObjectId,
+      ref: "Studyroom"
+  },
     created: {
         type: Date,
         default: Date.now

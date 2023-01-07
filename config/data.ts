@@ -1,3 +1,5 @@
+import { TimeRange } from "./types";
+
 export const timeRange: TimeRange[] = [
   {
     key: '1',

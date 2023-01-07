@@ -15,7 +15,7 @@ router.get("/", async (req: Request, res: Response) => {
         $group : {
           _id : "$building",
           studyrooms: { $push: {_id: "$_id", name: "$name", image: "$image"} } // { $push: "$$ROOT" }
-        }
+        },
       },
      ]
   )
@@ -26,6 +26,16 @@ router.get("/", async (req: Request, res: Response) => {
     })
     return b
   } )
+  res.status(200).send({data: allStudyroom})
+})
+router.get("/all", async (req: Request, res: Response) => {
+  const allStudyroom = (await Studyroom.find()).map(
+    function(e, i){ 
+      e.image=url + e.image
+      return e
+    }
+ )
+  console.log('READ STUDYROOM', allStudyroom)
   res.status(200).send({data: allStudyroom})
 })
 router.get("/supervisor", auth.organization, async (req: Request, res: Response) => {
