@@ -33,7 +33,9 @@ class Esse3 {
             }
             return result
         }catch(e: any) {
-            return undefined
+            return {
+                data: undefined
+            }
         }
     }
 

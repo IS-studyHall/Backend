@@ -43,18 +43,24 @@ var studyroomSchema = new Schema(
   {
     statics: {
       async checkAndSave(data: Studyroom) {
-        const Studyroom = mongoose.model('Studyroom')
-        const building = await Building.findById(data.building)
-        const user = await User.findOne({username: data.owner, supervisor: true})
-        const studyroom = new Studyroom({
-          name: data.name,
-          seats: data.seats,
-          floor: data.floor,
-          building: building,
-          image: data.image,
-          owner: user,
-        })
-        studyroom.save()
+        try{
+          const Studyroom = mongoose.model('Studyroom')
+          const building = await Building.findById(data.building)
+          const user = await User.findOne({username: data.owner, supervisor: true})
+          const studyroom = new Studyroom({
+            name: data.name,
+            seats: data.seats,
+            floor: data.floor,
+            building: building,
+            image: data.image,
+            owner: user,
+          })
+          await studyroom.save()
+          return 'create';
+        }catch(e){
+          console.log('error', e)
+          return null;
+        }
       }
     }
   }

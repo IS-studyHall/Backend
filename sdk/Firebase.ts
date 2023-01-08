@@ -22,7 +22,9 @@ class Firebase{
             }
             return result
         }catch(e){
-            return undefined
+            return {
+                data: undefined
+            }
         }
     }
 

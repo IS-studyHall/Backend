@@ -57,13 +57,12 @@ router.post("/create", auth.organization, async (req: Request, res: Response) =>
   var buf = Buffer.from(base64Data, 'base64');
   try {
     while(fs.existsSync(imgName))imgName = `${media}${uuidv4()}.png`;
-    fs.writeFile(imgName, buf,(err) => 
-        console.log('download finito!', err)
-    );
+    fs.writeFileSync(imgName, buf);
   } catch(err) {
-      console.error(err)
+    console.log('brodoo', err)
   }
-  await Studyroom.checkAndSave({ name, seats, floor, building, image: imgName, owner: username })
+  const data = await Studyroom.checkAndSave({ name, seats, floor, building, image: imgName, owner: username })
+  if(!data) res.status(400).send({data: 'error'})
   console.log('CREATE STUDYROOM')
   res.status(200).send({data: 'create'})
 })

@@ -27,5 +27,5 @@ var reservationSchema = new Schema(
     }
   }
 )
-
+reservationSchema.index({ user: 1, date: 1, start: 1, end: 1, studyroom: 1, },{unique: true}); // schema level
 export default mongoose.model('Reservation', reservationSchema)

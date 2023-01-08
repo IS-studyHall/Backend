@@ -11,7 +11,13 @@ router.post("/create", Auth.student, async (req: Request, res: Response) => {
   const studyroom = await Studyroom.findById(id)
   const user = await User.findOne({username: username})
   const myTime = timeRange.find(t => t.start === start && t.end === end)
-  if(myTime) await Reservation.create({start: myTime.start, end: myTime.end, date: date, user: user, studyroom: studyroom})
+  if(myTime){
+    try {
+      await Reservation.create({start: myTime.start, end: myTime.end, date: date, user: user, studyroom: studyroom})
+    }catch(e) {
+      res.status(400).send({error: 'errore durante la creazione della prenotazione'})
+    }
+  }
   res.send({data: 'create'})
 })
 //get all reservations by user
@@ -50,10 +56,13 @@ router.delete("/:id", Auth.student, async (req: Request, res: Response) => {
   res.send({data: reservations})
 })
 //get all reservations by organizer
-router.get("/supervisor", Auth.organization, async (req: Request, res: Response) => {
+router.get("/:id", Auth.organization, async (req: Request, res: Response) => {
   const {username} = req.body
+  const {id} = req.params
   const user = await User.findOne({username: username})
-  const reservations = await Reservation.find({user: user})
+  const studyroom = await Studyroom.findOne({_id: id, owner: user})
+  const today = new Date()
+  const reservations = (await Reservation.find({studyroom: studyroom})).map(r => r.date > today.toISOString())
   res.send({data: reservations})
 })
   export default router
