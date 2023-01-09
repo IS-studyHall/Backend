@@ -12,10 +12,16 @@ router.post("/create", Auth.student, async (req: Request, res: Response) => {
   const user = await User.findOne({username: username})
   const myTime = timeRange.find(t => t.start === start && t.end === end)
   if(myTime){
-    try {
-      await Reservation.create({start: myTime.start, end: myTime.end, date: date, user: user, studyroom: studyroom})
-    }catch(e) {
-      res.status(400).send({error: 'errore durante la creazione della prenotazione'})
+    const reservations = await Reservation.find({start: myTime.start, end: myTime.end, date: date, studyroom: studyroom})
+    if(reservations.length < studyroom.seats)
+    {
+      try {
+        await Reservation.create({start: myTime.start, end: myTime.end, date: date, user: user, studyroom: studyroom})
+      }catch(e) {
+        res.status(400).send({error: 'errore durante la creazione della prenotazione'})
+      }
+    }else{
+      res.status(400).send({error: 'posti disponibili esauriti'})
     }
   }
   res.send({data: 'create'})
@@ -53,6 +59,26 @@ router.delete("/:id", Auth.student, async (req: Request, res: Response) => {
   const {id} = req.params
   const user = await User.findOne({username: username})
   const reservations = await Reservation.findOneAndDelete({_id: id, user: user})
+  res.send({data: reservations})
+})
+//get count reservations by date and studyroom id
+router.post("/", Auth.student, async (req: Request, res: Response) => {
+  const {id, date} = req.body
+  const studyroom = await Studyroom.findById(id)
+  const reservations = await Reservation.aggregate(
+    [
+      { "$match": {"date": date, "studyroom": studyroom._id } },
+      {
+        $group : {
+          _id : {
+            "start": "$start",
+            "end": "$end",
+          },
+          count: { $sum: 1 },
+        },
+      },
+     ]
+  )
   res.send({data: reservations})
 })
 //get all reservations by organizer
