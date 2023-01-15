@@ -53,7 +53,7 @@ router.get("/supervisor", auth.organization, async (req: Request, res: Response)
 router.post("/create", auth.organization, async (req: Request, res: Response) => {
   const {name, seats, floor, building, username, image} = req.body
   try {
-    if(floor > 9 || seats > 99) res.status(400).send({data: 'error'})
+    if(floor > 9 || floor <=0 || seats <= 0|| seats > 99 || !image || image==='') res.status(400).send({data: 'error'})
   } catch(err) {
     res.status(400).send({data: 'error'})
   }
@@ -118,8 +118,13 @@ router.delete("/:id", auth.organization, async (req: Request, res: Response) => 
   }
 })
 router.patch("/:id", auth.organization, async (req: Request, res: Response) => {
-  const {id} = req.params
   const {name, seats, floor, building, username, image} = req.body
+  try {
+    if(!building || building==='' || floor > 9 || floor <=0 || seats <= 0|| seats > 99 || !image || image==='') res.status(400).send({data: 'error'})
+  } catch(err) {
+    res.status(400).send({data: 'error'})
+  }
+  const {id} = req.params
   const owner = await User.findOne({username: username})
   var imgName = image.substring(image.indexOf(media) + 1)
   console.log('image', imgName)

@@ -4,14 +4,14 @@ const request = axios.create({
     baseURL: process.env.BASE_URL,
     timeout: 5000,
     headers: {},
-})
+});
 test("studyroom create - success", async () => {
     const studyroom = {
-        name: 'Scienze 1',
+        name: 'Scienze 2',
         seats: 25,
         floor: 3,
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        building: '63c45b82b7f6c8c688b9119c', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -24,8 +24,8 @@ test("studyroom create - nome mancante", async () => {
         name: '',
         seats: 25,
         floor: 3,
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        building: '63c45b82b7f6c8c688b9119b', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -43,8 +43,8 @@ test("studyroom create - nome esistente", async () => {
         name: 'Scienze 1',
         seats: 25,
         floor: 3,
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        building: '63c45b82b7f6c8c688b9119b', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -63,7 +63,7 @@ test("studyroom create - edificio mancante", async () => {
         seats: 25,
         floor: 3,
         building: '',
-        image: 'defreofejofoer' //base64 image
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -81,8 +81,8 @@ test("studyroom create - edificio inesistente", async () => {
         name: 'Scienze 1',
         seats: 25,
         floor: 3,
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        building: '77c45b82b7f6c8c688b9119b', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -91,7 +91,7 @@ test("studyroom create - edificio inesistente", async () => {
         request.defaults.headers.common.Authorization = data['data']['token']
         await request.post('studyroom/create', studyroom)
     }catch(e){
-        if(e['response']['status'] != 200)
+        if(e['response']['status'] != 400)
             throw new Error('Richiesta andata a buon fine');
     }
 });
@@ -100,8 +100,8 @@ test("studyroom create - formato piano errato", async () => {
         name: 'Scienze 1',
         seats: 25,
         floor: '',
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        building: '63c45b82b7f6c8c688b9119b', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -110,7 +110,7 @@ test("studyroom create - formato piano errato", async () => {
         request.defaults.headers.common.Authorization = data['data']['token']
         await request.post('studyroom/create', studyroom)
     }catch(e){
-        if(e['response']['status'] != 200)
+        if(e['response']['status'] != 400)
             throw new Error('Richiesta andata a buon fine');
     }
 });
@@ -118,9 +118,9 @@ test("studyroom create - numero piano non valido", async () => {
     const studyroom = {
         name: 'Scienze 1',
         seats: 25,
-        floor: 30,
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        floor: 38,
+        building: '63c45b82b7f6c8c688b9119b', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -129,7 +129,7 @@ test("studyroom create - numero piano non valido", async () => {
         request.defaults.headers.common.Authorization = data['data']['token']
         await request.post('studyroom/create', studyroom)
     }catch(e){
-        if(e['response']['status'] != 200)
+        if(e['response']['status'] != 400)
             throw new Error('Richiesta andata a buon fine');
     }
 });
@@ -138,8 +138,8 @@ test("studyroom create - formato posti non valido", async () => {
         name: 'Scienze 1',
         seats: '',
         floor: 3,
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        building: '63c45b82b7f6c8c688b9119b', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -148,7 +148,7 @@ test("studyroom create - formato posti non valido", async () => {
         request.defaults.headers.common.Authorization = data['data']['token']
         await request.post('studyroom/create', studyroom)
     }catch(e){
-        if(e['response']['status'] != 200)
+        if(e['response']['status'] != 400)
             throw new Error('Richiesta andata a buon fine');
     }
 });
@@ -157,8 +157,8 @@ test("studyroom create - numero posti non valido", async () => {
         name: 'Scienze 1',
         seats: 100,
         floor: 3,
-        building: 'efereoet', //id building
-        image: 'defreofejofoer' //base64 image
+        building: '63c45b82b7f6c8c688b9119b', //id building
+        image: 'data:image/png;base64,fjrhgergheogrogieorieggurh' //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -167,7 +167,7 @@ test("studyroom create - numero posti non valido", async () => {
         request.defaults.headers.common.Authorization = data['data']['token']
         await request.post('studyroom/create', studyroom)
     }catch(e){
-        if(e['response']['status'] != 200)
+        if(e['response']['status'] != 400)
             throw new Error('Richiesta andata a buon fine');
     }
 });
@@ -176,8 +176,8 @@ test("studyroom create - immagine mancante", async () => {
         name: 'Scienze 1',
         seats: 10,
         floor: 3,
-        building: 'efereoet', //id building
-        image: '' //base64 image
+        building: '63c45b82b7f6c8c688b9119b', //id building
+        image: null //base64 image
     }
     const email = 'iperuranio@mailinator.com'
     const password = 'test1234!'
@@ -186,7 +186,7 @@ test("studyroom create - immagine mancante", async () => {
         request.defaults.headers.common.Authorization = data['data']['token']
         await request.post('studyroom/create', studyroom)
     }catch(e){
-        if(e['response']['status'] != 200)
+        if(e['response']['status'] != 400)
             throw new Error('Richiesta andata a buon fine');
     }
 });
