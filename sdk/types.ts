@@ -7,7 +7,7 @@ export interface Esse3login {
     token: string
     firstName?: string
     lastName?: string
-    codFis?: string
+    matricola?: string
 }
 
 export interface FirebaseLogin {

@@ -40,17 +40,28 @@ var userSchema = new Schema(
           }
         })
       },
-      checkAndSaveStudent(data: Esse3login) {
-        const Student = mongoose.model('User')
-        Student.findOne({username : data.username, supervisor: false}, (err: any, user: any) =>{
-          if(!err && !user){
-            const student = new Student({
+      async checkAndSaveStudent(data: Esse3login) {
+        const User = mongoose.model('User')
+        try {
+        const user = await User.find({username : data.username, supervisor: false})
+          if(user.length === 0){
+            const user = new User({
               username: data.username,
               supervisor: false,
             })
+            user.save()
+            const Student = mongoose.model('Student')
+            const student = new Student({
+              firstname: data.firstName,
+              lastName: data.lastName,
+              numberid: data.matricola,
+              user: user
+            })
             student.save()
           }
-        })
+      } catch(e){
+        console.log(e)
+      }
       }
     },
   },

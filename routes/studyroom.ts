@@ -52,6 +52,11 @@ router.get("/supervisor", auth.organization, async (req: Request, res: Response)
 })
 router.post("/create", auth.organization, async (req: Request, res: Response) => {
   const {name, seats, floor, building, username, image} = req.body
+  try {
+    if(floor > 9 || seats > 99) res.status(400).send({data: 'error'})
+  } catch(err) {
+    res.status(400).send({data: 'error'})
+  }
   var imgName = `${media}${uuidv4()}.png`;
   var base64Data = image.replace(/^data:image\/png;base64,/, "");
   var buf = Buffer.from(base64Data, 'base64');
@@ -80,9 +85,21 @@ router.get("/:id/changestatus", auth.organization, async (req: Request, res: Res
 router.get("/:id", async (req: Request, res: Response) => {
   const {id} = req.params
   const studyroom = await Studyroom.findOne({_id: id})
+  const owner = await User.findOne({_id: studyroom.owner})
   studyroom.image = url + studyroom.image
+  const newStudyroom = {
+    name: studyroom.name,
+    seats: studyroom.seats,
+    floor: studyroom.floor,
+    isactive: studyroom.isactive,
+    image: studyroom.image,
+    building: studyroom.building,
+    owner: studyroom.owner,
+    created: studyroom.created,
+    email: owner.email
+  }
   console.log('READ STUDYROOM')
-  res.status(200).send({data: studyroom})
+  res.status(200).send({data: newStudyroom})
 })
 router.delete("/:id", auth.organization, async (req: Request, res: Response) => {
   const {id} = req.params

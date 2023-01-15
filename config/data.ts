@@ -1,5 +1,3 @@
-import { TimeRange } from "./types";
-
 export const timeRange: TimeRange[] = [
   {
     key: '1',
@@ -22,3 +20,8 @@ export const timeRange: TimeRange[] = [
     end: '18:00',
   },
 ];
+interface TimeRange {
+  key: string;
+  start: string;
+  end: string;
+}

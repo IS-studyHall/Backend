@@ -14,12 +14,15 @@ var studentSchema = new Schema(
       trim: true,
       required: true
     },
-    codFis: {
+    numberid: {
       type: String,
       unique: true,
       trim: true,
-      required: true
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+  },
     created: {
       type: Date,
       default: Date.now

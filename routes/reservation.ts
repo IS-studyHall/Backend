@@ -81,7 +81,7 @@ router.post("/", Auth.student, async (req: Request, res: Response) => {
   )
   res.send({data: reservations})
 })
-//get all reservations by organizer
+//get all reservations by studyroom
 router.get("/:id", Auth.organization, async (req: Request, res: Response) => {
   const {username} = req.body
   const {id} = req.params

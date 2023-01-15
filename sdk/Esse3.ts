@@ -29,6 +29,7 @@ class Esse3 {
                     codFis: resp['data']['user']['codFis'],
                     username: resp['data']['user']['userId'],
                     token: tokenAuth,
+                    matricola: resp['data']['user']['trattiCarriera'][0]['matricola']
                 }
             }
             return result
