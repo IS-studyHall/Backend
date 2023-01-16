@@ -12,7 +12,8 @@
     "test:studentLogin": "jest  __tests__/studentLogin.js",
     "test:studentCheckLogon": "jest  __tests__/studentCheckLogon.js",
     "test:studyroomCreate": "jest  __tests__/studyroomCreate.js",
-    "test:studyroomUpdate": "jest  __tests__/studyroomUpdate.js"
+    "test:studyroomUpdate": "jest  __tests__/studyroomUpdate.js",
+    "test:reservationCreate": "jest  __tests__/reservationCreate.js"
   },
   "jest": {
     "collectCoverage": true,

@@ -8,6 +8,12 @@ const router = Router()
 //create reservation
 router.post("/create", Auth.student, async (req: Request, res: Response) => {
   const {start, end, date, id, username} = req.body
+  const today = new Date(); 
+  let datea = new Date(date); 
+  
+  if(datea <= today){
+    res.status(400).send({error: 'errore data errata'})
+  }
   const studyroom = await Studyroom.findById(id)
   const user = await User.findOne({username: username})
   const myTime = timeRange.find(t => t.start === start && t.end === end)
