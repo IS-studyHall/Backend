@@ -13,10 +13,9 @@
     "test:studentCheckLogon": "jest  __tests__/studentCheckLogon.js",
     "test:studyroomCreate": "jest  __tests__/studyroomCreate.js",
     "test:studyroomUpdate": "jest  __tests__/studyroomUpdate.js"
-
   },
   "jest": {
-    "collectCoverage":true,
+    "collectCoverage": true,
     "verbose": true
   },
   "author": "",
