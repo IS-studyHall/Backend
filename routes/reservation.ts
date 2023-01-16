@@ -15,6 +15,7 @@ router.post("/create", Auth.student, async (req: Request, res: Response) => {
     res.status(400).send({error: 'errore data errata'})
   }
   const studyroom = await Studyroom.findById(id)
+  if(studyroom.isactive === false) res.status(400).send({error: 'aula studio non attiva'})
   const user = await User.findOne({username: username})
   const myTime = timeRange.find(t => t.start === start && t.end === end)
   if(myTime){
