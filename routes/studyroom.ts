@@ -88,6 +88,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   const owner = await User.findOne({_id: studyroom.owner})
   studyroom.image = url + studyroom.image
   const newStudyroom = {
+    _id: studyroom._id,
     name: studyroom.name,
     seats: studyroom.seats,
     floor: studyroom.floor,
@@ -126,7 +127,7 @@ router.patch("/:id", auth.organization, async (req: Request, res: Response) => {
   }
   const {id} = req.params
   const owner = await User.findOne({username: username})
-  var imgName = image.substring(image.indexOf(media) + 1)
+  var imgName = image.substring(image.indexOf(media))
   console.log('image', imgName)
   try {
     if(image.includes('data:image/png;base64,')) {
@@ -141,9 +142,11 @@ router.patch("/:id", auth.organization, async (req: Request, res: Response) => {
   } catch(err) {
       console.error(err)
   }
-  finally{
+  try{
     await Studyroom.findOneAndUpdate({_id: id, owner: owner}, {name, seats, floor, building, image: imgName})
     res.status(200).send({data: 'update'})
+  }catch(e){
+    res.status(400).send({data: 'error'})
   }
 })
 export default router

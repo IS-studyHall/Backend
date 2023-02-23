@@ -95,7 +95,7 @@ router.get("/:id", Auth.organization, async (req: Request, res: Response) => {
   const user = await User.findOne({username: username})
   const studyroom = await Studyroom.findOne({_id: id, owner: user})
   const today = new Date()
-  const reservations = (await Reservation.find({studyroom: studyroom})).map(r => r.date > today.toISOString())
+  const reservations = (await Reservation.find({studyroom: studyroom})) //.map(r => r.date > today.toISOString())
   res.send({data: reservations})
 })
   export default router
